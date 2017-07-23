@@ -1,0 +1,27 @@
+{
+  "name": "storex",
+  "version": "0.2.0",
+  "description": "",
+  "main": "dist/StoreX.js",
+  "typings": "dist/StoreX.d.ts",
+  "scripts": {
+    "build": "rm -rf ./dist && ./node_modules/.bin/tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Riim/StoreX.git"
+  },
+  "author": "Dmitry Vibe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Riim/StoreX/issues"
+  },
+  "homepage": "https://github.com/Riim/StoreX#readme",
+  "devDependencies": {
+    "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "cellx": "^1.7.22"
+  }
+}
