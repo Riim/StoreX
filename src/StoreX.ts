@@ -21,7 +21,7 @@ export class StoreX extends EventEmitter {
 	_typeConstructors: Map<string, typeof EventEmitter>;
 	_types: Map<string, Map<any, IStoreXType>>;
 
-	initialize: () => void | null;
+	initialize: () => void;
 
 	// tslint:disable-next-line
 	constructor(types: { [typeName: string]: Function }, initialize?: () => void) {
@@ -38,14 +38,14 @@ export class StoreX extends EventEmitter {
 		}
 	}
 
-	get(typeName: string, id?: any): EventEmitter | null;
-	get(typeName: string, id?: Array<any>): Array<EventEmitter | null>;
+	get<T extends EventEmitter = EventEmitter>(typeName: string, id?: any): T | null;
+	get<T extends EventEmitter = EventEmitter>(typeName: string, id?: Array<any>): Array<T | null>;
 	get(typeName: string, id?: any | Array<any>): EventEmitter | Array<EventEmitter | null> | null {
 		let types = this._types.get(typeName);
 		return Array.isArray(id) ? id.map((id) => types && types.get(id) || null) : types && types.get(id) || null;
 	}
 
-	set(typeName: string, type: IStoreXType): StoreX {
+	set(typeName: string, type: IStoreXType): this {
 		let types = this._types.get(typeName);
 
 		if (!types) {
@@ -58,7 +58,7 @@ export class StoreX extends EventEmitter {
 		return this;
 	}
 
-	push(data: any): any {
+	push<T = any>(data: any): T {
 		if (Array.isArray(data)) {
 			let list = [] as Array<any>;
 
@@ -67,7 +67,7 @@ export class StoreX extends EventEmitter {
 				list[i] = isObjectOrArray(value) ? this.push(value) : value;
 			}
 
-			return list;
+			return list as any;
 		}
 
 		let typeName = data.__type;
@@ -114,7 +114,7 @@ export class StoreX extends EventEmitter {
 				}
 			}
 
-			return type;
+			return type as any;
 		}
 
 		let dataCopy = {} as { [name: string]: any };
@@ -124,7 +124,7 @@ export class StoreX extends EventEmitter {
 			dataCopy[name] = isObjectOrArray(value) ? this.push(value) : value;
 		}
 
-		return dataCopy;
+		return dataCopy as any;
 	}
 
 	delete(typeName: string, id?: any): boolean {
@@ -138,7 +138,7 @@ export class StoreX extends EventEmitter {
 		return false;
 	}
 
-	clear(): StoreX {
+	clear(): this {
 		this._types = new Map<string, Map<any, IStoreXType>>();
 
 		if (this.initialize) {

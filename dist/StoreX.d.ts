@@ -5,14 +5,14 @@ export interface IStoreXType extends EventEmitter {
 export declare class StoreX extends EventEmitter {
     _typeConstructors: Map<string, typeof EventEmitter>;
     _types: Map<string, Map<any, IStoreXType>>;
-    initialize: () => void | null;
+    initialize: () => void;
     constructor(types: {
         [typeName: string]: Function;
     }, initialize?: () => void);
-    get(typeName: string, id?: any): EventEmitter | null;
-    get(typeName: string, id?: Array<any>): Array<EventEmitter | null>;
-    set(typeName: string, type: IStoreXType): StoreX;
-    push(data: any): any;
+    get<T extends EventEmitter = EventEmitter>(typeName: string, id?: any): T | null;
+    get<T extends EventEmitter = EventEmitter>(typeName: string, id?: Array<any>): Array<T | null>;
+    set(typeName: string, type: IStoreXType): this;
+    push<T = any>(data: any): T;
     delete(typeName: string, id?: any): boolean;
-    clear(): StoreX;
+    clear(): this;
 }
