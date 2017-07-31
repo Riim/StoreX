@@ -33,6 +33,13 @@ var StoreX = (function (_super) {
         var types = this._types.get(typeName);
         return Array.isArray(id) ? id.map(function (id) { return types && types.get(id) || null; }) : types && types.get(id) || null;
     };
+    StoreX.prototype.getAll = function (typeName) {
+        var types = [];
+        (this._types.get(typeName) || []).forEach(function (type) {
+            types.push(type);
+        });
+        return types;
+    };
     StoreX.prototype.set = function (typeName, type) {
         var types = this._types.get(typeName);
         if (!types) {

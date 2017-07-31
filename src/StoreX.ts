@@ -13,13 +13,9 @@ function isObjectOrArray(value: any): boolean {
 	return value && typeof value == 'object' && (Object.getPrototypeOf(value) === ObjectProto || Array.isArray(value));
 }
 
-export interface IStoreXType extends EventEmitter {
-	[name: string]: any;
-}
-
 export class StoreX extends EventEmitter {
 	_typeConstructors: Map<string, typeof EventEmitter>;
-	_types: Map<string, Map<any, IStoreXType>>;
+	_types: Map<string, Map<any, EventEmitter>>;
 
 	initialize: () => void;
 
@@ -30,7 +26,7 @@ export class StoreX extends EventEmitter {
 		this._typeConstructors = new Map<string, typeof EventEmitter>(
 			Object.keys(types).map((name) => [name, types[name]]) as any
 		);
-		this._types = new Map<string, Map<any, IStoreXType>>();
+		this._types = new Map<string, Map<any, EventEmitter>>();
 
 		if (initialize) {
 			this.initialize = initialize;
@@ -45,15 +41,25 @@ export class StoreX extends EventEmitter {
 		return Array.isArray(id) ? id.map((id) => types && types.get(id) || null) : types && types.get(id) || null;
 	}
 
-	set(typeName: string, type: IStoreXType): this {
+	getAll<T extends EventEmitter = EventEmitter>(typeName: string): Array<T> {
+		let types = [] as Array<T>;
+
+		((this._types.get(typeName) || []) as Array<T>).forEach((type) => {
+			types.push(type);
+		});
+
+		return types;
+	}
+
+	set(typeName: string, type: EventEmitter): this {
 		let types = this._types.get(typeName);
 
 		if (!types) {
-			types = new Map<any, IStoreXType>();
+			types = new Map<any, EventEmitter>();
 			this._types.set(typeName, types);
 		}
 
-		types.set(type.id, type);
+		types.set((type as any).id, type);
 
 		return this;
 	}
@@ -82,7 +88,7 @@ export class StoreX extends EventEmitter {
 			let types = this._types.get(typeName);
 
 			if (!types) {
-				types = new Map<any, IStoreXType>();
+				types = new Map<any, EventEmitter>();
 				this._types.set(typeName, types);
 			}
 
@@ -110,7 +116,7 @@ export class StoreX extends EventEmitter {
 						}
 					}
 
-					type[name] = value;
+					(type as any)[name] = value;
 				}
 			}
 
@@ -139,7 +145,7 @@ export class StoreX extends EventEmitter {
 	}
 
 	clear(): this {
-		this._types = new Map<string, Map<any, IStoreXType>>();
+		this._types = new Map<string, Map<any, EventEmitter>>();
 
 		if (this.initialize) {
 			this.initialize();
