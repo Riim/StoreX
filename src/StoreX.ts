@@ -1,11 +1,5 @@
-import {
-	EventEmitter,
-	JS,
-	ObservableList,
-	ObservableMap
-	} from 'cellx';
-
-let Map = JS.Map;
+import { Map } from '@riim/map-set-polyfill';
+import { EventEmitter, ObservableList, ObservableMap } from 'cellx';
 
 let ObjectProto = Object.prototype;
 

@@ -10,8 +10,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var map_set_polyfill_1 = require("@riim/map-set-polyfill");
 var cellx_1 = require("cellx");
-var Map = cellx_1.JS.Map;
 var ObjectProto = Object.prototype;
 function isObjectOrArray(value) {
     return value && typeof value == 'object' && (Object.getPrototypeOf(value) === ObjectProto || Array.isArray(value));
@@ -21,8 +21,8 @@ var StoreX = (function (_super) {
     // tslint:disable-next-line
     function StoreX(types, initialize) {
         var _this = _super.call(this) || this;
-        _this._typeConstructors = new Map(Object.keys(types).map(function (name) { return [name, types[name]]; }));
-        _this._types = new Map();
+        _this._typeConstructors = new map_set_polyfill_1.Map(Object.keys(types).map(function (name) { return [name, types[name]]; }));
+        _this._types = new map_set_polyfill_1.Map();
         if (initialize) {
             _this.initialize = initialize;
             _this.initialize();
@@ -43,7 +43,7 @@ var StoreX = (function (_super) {
     StoreX.prototype.set = function (typeName, type) {
         var types = this._types.get(typeName);
         if (!types) {
-            types = new Map();
+            types = new map_set_polyfill_1.Map();
             this._types.set(typeName, types);
         }
         types.set(type.id, type);
@@ -66,7 +66,7 @@ var StoreX = (function (_super) {
             }
             var types = this._types.get(typeName);
             if (!types) {
-                types = new Map();
+                types = new map_set_polyfill_1.Map();
                 this._types.set(typeName, types);
             }
             var id = data.id;
@@ -110,7 +110,7 @@ var StoreX = (function (_super) {
         return false;
     };
     StoreX.prototype.clear = function () {
-        this._types = new Map();
+        this._types = new map_set_polyfill_1.Map();
         if (this.initialize) {
             this.initialize();
         }
