@@ -4,7 +4,11 @@ import { EventEmitter, ObservableList, ObservableMap } from 'cellx';
 let ObjectProto = Object.prototype;
 
 function isObjectOrArray(value: any): boolean {
-	return value && typeof value == 'object' && (Object.getPrototypeOf(value) === ObjectProto || Array.isArray(value));
+	return (
+		value &&
+		typeof value == 'object' &&
+		(Object.getPrototypeOf(value) === ObjectProto || Array.isArray(value))
+	);
 }
 
 export class StoreX extends EventEmitter {
@@ -17,9 +21,9 @@ export class StoreX extends EventEmitter {
 	constructor(types: { [typeName: string]: Function }, initialize?: () => void) {
 		super();
 
-		this._typeConstructors = new Map<string, typeof EventEmitter>(
-			Object.keys(types).map((name) => [name, types[name]]) as any
-		);
+		this._typeConstructors = new Map<string, typeof EventEmitter>(Object.keys(types).map(
+			name => [name, types[name]]
+		) as any);
 		this._types = new Map<string, Map<any, EventEmitter>>();
 
 		if (initialize) {
@@ -32,13 +36,15 @@ export class StoreX extends EventEmitter {
 	get<T extends EventEmitter = EventEmitter>(typeName: string, id?: Array<any>): Array<T | null>;
 	get(typeName: string, id?: any | Array<any>): EventEmitter | Array<EventEmitter | null> | null {
 		let types = this._types.get(typeName);
-		return Array.isArray(id) ? id.map((id) => types && types.get(id) || null) : types && types.get(id) || null;
+		return Array.isArray(id)
+			? id.map(id => (types && types.get(id)) || null)
+			: (types && types.get(id)) || null;
 	}
 
 	getAll<T extends EventEmitter = EventEmitter>(typeName: string): Array<T> {
 		let types = [] as Array<T>;
 
-		((this._types.get(typeName) || []) as Array<T>).forEach((type) => {
+		((this._types.get(typeName) || []) as Array<T>).forEach(type => {
 			types.push(type);
 		});
 
@@ -76,7 +82,7 @@ export class StoreX extends EventEmitter {
 			let typeConstructor = this._typeConstructors.get(typeName);
 
 			if (!typeConstructor) {
-				throw new TypeError(`Type "${ typeName }" is not defined`);
+				throw new TypeError(`Type "${typeName}" is not defined`);
 			}
 
 			let types = this._types.get(typeName);
@@ -127,7 +133,7 @@ export class StoreX extends EventEmitter {
 		return dataCopy as any;
 	}
 
-	delete(typeName: string, id?: any): boolean {
+	discard(typeName: string, id?: any): boolean {
 		let types = this._types.get(typeName);
 
 		if (types && types.has(id)) {

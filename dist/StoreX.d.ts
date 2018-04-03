@@ -11,6 +11,6 @@ export declare class StoreX extends EventEmitter {
     getAll<T extends EventEmitter = EventEmitter>(typeName: string): Array<T>;
     set(typeName: string, type: EventEmitter): this;
     push<T = any>(data: any): T;
-    delete(typeName: string, id?: any): boolean;
+    discard(typeName: string, id?: any): boolean;
     clear(): this;
 }

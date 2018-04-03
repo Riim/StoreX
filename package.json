@@ -1,11 +1,11 @@
 {
   "name": "storex",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "",
   "main": "dist/StoreX.js",
   "typings": "dist/StoreX.d.ts",
   "scripts": {
-    "build": "rm -rf ./dist && ./node_modules/.bin/tsc",
+    "build": "rm -rf dist && node_modules/.bin/tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,10 +19,10 @@
   },
   "homepage": "https://github.com/Riim/StoreX#readme",
   "devDependencies": {
-    "typescript": "^2.5.0"
+    "typescript": "^2.8.1"
   },
   "dependencies": {
-    "@riim/map-set-polyfill": "^1.0.0",
-    "cellx": "^1.7.34"
+    "@riim/map-set-polyfill": "^1.0.1",
+    "cellx": "^1.7.81"
   }
 }

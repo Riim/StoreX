@@ -14,9 +14,11 @@ var map_set_polyfill_1 = require("@riim/map-set-polyfill");
 var cellx_1 = require("cellx");
 var ObjectProto = Object.prototype;
 function isObjectOrArray(value) {
-    return value && typeof value == 'object' && (Object.getPrototypeOf(value) === ObjectProto || Array.isArray(value));
+    return (value &&
+        typeof value == 'object' &&
+        (Object.getPrototypeOf(value) === ObjectProto || Array.isArray(value)));
 }
-var StoreX = (function (_super) {
+var StoreX = /** @class */ (function (_super) {
     __extends(StoreX, _super);
     // tslint:disable-next-line
     function StoreX(types, initialize) {
@@ -31,7 +33,9 @@ var StoreX = (function (_super) {
     }
     StoreX.prototype.get = function (typeName, id) {
         var types = this._types.get(typeName);
-        return Array.isArray(id) ? id.map(function (id) { return types && types.get(id) || null; }) : types && types.get(id) || null;
+        return Array.isArray(id)
+            ? id.map(function (id) { return (types && types.get(id)) || null; })
+            : (types && types.get(id)) || null;
     };
     StoreX.prototype.getAll = function (typeName) {
         var types = [];
@@ -101,7 +105,7 @@ var StoreX = (function (_super) {
         }
         return dataCopy;
     };
-    StoreX.prototype.delete = function (typeName, id) {
+    StoreX.prototype.discard = function (typeName, id) {
         var types = this._types.get(typeName);
         if (types && types.has(id)) {
             types.delete(id);
