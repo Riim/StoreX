@@ -107,9 +107,12 @@ var StoreX = /** @class */ (function (_super) {
     };
     StoreX.prototype.discard = function (typeName, id) {
         var types = this._types.get(typeName);
-        if (types && types.has(id)) {
-            types.delete(id);
-            return true;
+        if (types && types.size) {
+            if (arguments.length == 1) {
+                types.clear();
+                return true;
+            }
+            return types.delete(id);
         }
         return false;
     };

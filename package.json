@@ -1,6 +1,6 @@
 {
   "name": "storex",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "",
   "main": "dist/StoreX.js",
   "typings": "dist/StoreX.d.ts",
@@ -23,6 +23,6 @@
   },
   "dependencies": {
     "@riim/map-set-polyfill": "^1.0.1",
-    "cellx": "^1.7.81"
+    "cellx": "^1.7.82"
   }
 }

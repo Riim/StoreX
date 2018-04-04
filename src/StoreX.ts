@@ -136,9 +136,13 @@ export class StoreX extends EventEmitter {
 	discard(typeName: string, id?: any): boolean {
 		let types = this._types.get(typeName);
 
-		if (types && types.has(id)) {
-			types.delete(id);
-			return true;
+		if (types && types.size) {
+			if (arguments.length == 1) {
+				types.clear();
+				return true;
+			}
+
+			return types.delete(id);
 		}
 
 		return false;
